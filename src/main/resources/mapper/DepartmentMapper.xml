@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybb.dao.DepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.ybb.bean.Department">
+    <id column="depl_id" jdbcType="INTEGER" property="deplId" />
+    <result column="depl_name" jdbcType="VARCHAR" property="deplName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    depl_id, depl_name
+  </sql>
+  <select id="selectByExample" parameterType="com.ybb.bean.DepartmentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from depl
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from depl
+    where depl_id = #{deplId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from depl
+    where depl_id = #{deplId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ybb.bean.DepartmentExample">
+    delete from depl
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ybb.bean.Department">
+    insert into depl (depl_id, depl_name)
+    values (#{deplId,jdbcType=INTEGER}, #{deplName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ybb.bean.Department">
+    insert into depl
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deplId != null">
+        depl_id,
+      </if>
+      <if test="deplName != null">
+        depl_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deplId != null">
+        #{deplId,jdbcType=INTEGER},
+      </if>
+      <if test="deplName != null">
+        #{deplName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ybb.bean.DepartmentExample" resultType="java.lang.Long">
+    select count(*) from depl
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update depl
+    <set>
+      <if test="record.deplId != null">
+        depl_id = #{record.deplId,jdbcType=INTEGER},
+      </if>
+      <if test="record.deplName != null">
+        depl_name = #{record.deplName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update depl
+    set depl_id = #{record.deplId,jdbcType=INTEGER},
+      depl_name = #{record.deplName,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ybb.bean.Department">
+    update depl
+    <set>
+      <if test="deplName != null">
+        depl_name = #{deplName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where depl_id = #{deplId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ybb.bean.Department">
+    update depl
+    set depl_name = #{deplName,jdbcType=VARCHAR}
+    where depl_id = #{deplId,jdbcType=INTEGER}
+  </update>
+</mapper>
